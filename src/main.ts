@@ -11,13 +11,14 @@ const router = new KoaRouter();
 const origin = `${process.env.HTTP_PROTOCOL}://${process.env.HOST}`;
 
 router.get("/.well-known/webfinger", (ctx) => {
-	console.log(ctx.request.query["resource"]);
+	console.log(`WebFinger lookup ${ctx.request.query["resource"]}`);
 	if (
 		ctx.request.query["resource"] !== `acct:${username}@${process.env.HOST}`
 	) {
 		ctx.status = 404;
 		return;
 	}
+	console.log("WebFinger found");
 
 	ctx.headers["content-type"] = "application/jrd+json; charset=utf-8";
 
