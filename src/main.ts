@@ -1,6 +1,6 @@
 import Koa from "koa";
 import KoaRouter from "@koa/router";
-import * as bodyParser from "koa-bodyparser";
+import bodyParser from "koa-bodyparser";
 
 const username = "admin";
 
@@ -109,6 +109,15 @@ router.get(`/users/${username}/liked`, (ctx) => {
 
 router.post(`/users/${username}/inbox`, bodyParser(), (ctx) => {
 	ctx.status = 200;
+});
+
+router.get(`/users/${username}/liked`, (ctx) => {
+	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
+	ctx.body = {
+		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/liked`,
+		type: "OrderedCollection",
+		totalItems: 0,
+	};
 });
 
 app.use(router.routes());
