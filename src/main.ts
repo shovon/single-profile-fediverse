@@ -1,3 +1,4 @@
+import { Server } from "http";
 import Koa from "koa";
 import KoaRouter from "@koa/router";
 import bodyParser from "koa-bodyparser";
@@ -130,4 +131,6 @@ router.get(`/users/${username}/liked`, (ctx) => {
 
 app.use(router.routes());
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT, function (this: Server) {
+	console.log(this.address());
+});
