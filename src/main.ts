@@ -62,6 +62,7 @@ router.get(`@${username}`, (ctx) => {
 });
 
 router.get(`/users/${username}`, (ctx) => {
+	console.log("ActivityPub user lookup");
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}`,
