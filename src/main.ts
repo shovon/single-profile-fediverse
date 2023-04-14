@@ -7,6 +7,8 @@ const username = "admin";
 const app = new Koa();
 const router = new KoaRouter();
 
+const origin = `${process.env.HTTP_PROTOCOL}://${process.env.HOST}`;
+
 router.get("/.well-known/webfinger", (ctx) => {
 	if (
 		ctx.request.query["resource"] !== `acct:${username}@${process.env.HOST}`
@@ -19,29 +21,29 @@ router.get("/.well-known/webfinger", (ctx) => {
 
 	ctx.body = {
 		subject: `acct:admin@${process.env.HOST}`,
-		aliases: [
-			`${process.env.HTTP_PROTOCOL}://${process.env.HOST}/@${username}}`,
-		],
+		aliases: [`${origin}/@${username}}`],
 		links: [
 			{
 				rel: "http://webfinger.net/rel/profile-page",
 				type: "text/html",
-				href: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/@${username}`,
+				href: `${origin}/@${username}`,
 			},
 			{
 				rel: "self",
 				type: "application/activity+json",
-				href: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}`,
+				href: `${origin}/users/${username}`,
 			},
 			{
 				rel: "http://ostatus.org/schema/1.0/subscribe",
-				template: "https://techhub.social/authorize_interaction?uri={uri}",
+				template: `${origin}/authorize_interaction?uri={uri}`,
 			},
 		],
 	};
 });
 
 router.get(`@${username}`, (ctx) => {
+	// TODO: this should be moved to an entirely different front-end or JAM Stack
+	//   solution.
 	ctx.headers["content-type"] = "text/html; charset=utf-8";
 	ctx.body = `
 		<!DOCTYPE html>
@@ -108,7 +110,13 @@ router.get(`/users/${username}/liked`, (ctx) => {
 });
 
 router.post(`/users/${username}/inbox`, bodyParser(), (ctx) => {
-	ctx.status = 200;
+	switch ((ctx.request.body as any).type) {
+		case "Follow":
+			ctx.status = 200;
+			break;
+		default:
+			ctx.status = 400;
+	}
 });
 
 router.get(`/users/${username}/liked`, (ctx) => {
