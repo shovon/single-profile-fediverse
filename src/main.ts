@@ -3,7 +3,7 @@ import Koa from "koa";
 import KoaRouter from "@koa/router";
 import bodyParser from "koa-bodyparser";
 
-const username = "admin";
+const username = "main";
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -65,7 +65,7 @@ router.get(`/users/${username}`, (ctx) => {
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}`,
 		type: "Person",
 		preferredUsername: username,
-		name: username,
+		name: "Sal Rahman",
 		inbox: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/inbox`,
 		followers: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/followers`,
 		following: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/following`,

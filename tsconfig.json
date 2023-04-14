@@ -13,9 +13,7 @@
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
 		"skipLibCheck": true,
-		"outDir": "dist",
-		"declaration": true
+		"outDir": "dist"
 	},
-	"include": ["src/main.ts"],
 	"exclude": ["node_modules", "dist"]
 }
