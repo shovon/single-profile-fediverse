@@ -11,7 +11,7 @@ const router = new KoaRouter();
 const origin = `${process.env.HTTP_PROTOCOL}://${process.env.HOST}`;
 
 router.get("/.well-known/webfinger", (ctx) => {
-	console.log("Looking up on webfinger");
+	console.log(ctx.request.query["resource"]);
 	if (
 		ctx.request.query["resource"] !== `acct:${username}@${process.env.HOST}`
 	) {
