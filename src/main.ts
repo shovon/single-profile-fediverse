@@ -97,7 +97,7 @@ router.get(`/@:username`, (ctx) => {
 	`;
 });
 
-router.get(`/users/${username}`, (ctx) => {
+router.get(`/users/:username`, (ctx) => {
 	if (ctx.params.username !== username && ctx.params.username !== "admin") {
 		ctx.status = 404;
 		return;
@@ -117,7 +117,7 @@ router.get(`/users/${username}`, (ctx) => {
 	};
 });
 
-router.get(`/users/${username}/followers`, (ctx) => {
+router.get(`/users/:username/followers`, (ctx) => {
 	if (ctx.params.username !== username && ctx.params.username !== "admin") {
 		ctx.status = 404;
 		return;
@@ -130,7 +130,7 @@ router.get(`/users/${username}/followers`, (ctx) => {
 	};
 });
 
-router.get(`/users/${username}/following`, (ctx) => {
+router.get(`/users/:username/following`, (ctx) => {
 	if (ctx.params.username !== username && ctx.params.username !== "admin") {
 		ctx.status = 404;
 		return;
@@ -143,7 +143,7 @@ router.get(`/users/${username}/following`, (ctx) => {
 	};
 });
 
-router.get(`/users/${username}/outbox`, (ctx) => {
+router.get(`/users/:username/outbox`, (ctx) => {
 	if (ctx.params.username !== username && ctx.params.username !== "admin") {
 		ctx.status = 404;
 		return;
@@ -156,7 +156,7 @@ router.get(`/users/${username}/outbox`, (ctx) => {
 	};
 });
 
-router.get(`/users/${username}/liked`, (ctx) => {
+router.get(`/users/:username/liked`, (ctx) => {
 	if (ctx.params.username !== username && ctx.params.username !== "admin") {
 		ctx.status = 404;
 		return;
@@ -169,7 +169,7 @@ router.get(`/users/${username}/liked`, (ctx) => {
 	};
 });
 
-router.post(`/users/${username}/inbox`, bodyParser(), (ctx) => {
+router.post(`/users/:username/inbox`, bodyParser(), (ctx) => {
 	if (ctx.params.username !== username && ctx.params.username !== "admin") {
 		ctx.status = 404;
 		return;
@@ -183,7 +183,7 @@ router.post(`/users/${username}/inbox`, bodyParser(), (ctx) => {
 	}
 });
 
-router.get(`/users/${username}/liked`, (ctx) => {
+router.get(`/users/:username/liked`, (ctx) => {
 	if (ctx.params.username !== username && ctx.params.username !== "admin") {
 		ctx.status = 404;
 		return;
