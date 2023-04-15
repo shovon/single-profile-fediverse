@@ -105,6 +105,13 @@ router.get(`/users/:username`, (ctx) => {
 	console.log("ActivityPub user lookup");
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
+		"@context": [
+			"https://www.w3.org/ns/activitystreams",
+			{
+				toot: "http://joinmastodon.org/ns#",
+				discoverable: "toot:discoverable",
+			},
+		],
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}`,
 		type: "Person",
 		preferredUsername: ctx.params.username,
