@@ -12,9 +12,41 @@ const origin = `${process.env.HTTP_PROTOCOL}://${process.env.HOST}`;
 
 router.get("/.well-known/webfinger", (ctx) => {
 	console.log(`WebFinger lookup ${ctx.request.query["resource"]}`);
-	if (
-		ctx.request.query["resource"] !== `acct:${username}@${process.env.HOST}`
-	) {
+
+	const resource = ctx.request.query["resource"];
+	if (!resource) {
+		ctx.status = 400;
+		return;
+	}
+
+	if (typeof resource !== "string") {
+		ctx.status = 400;
+		return;
+	}
+
+	const [, address] = resource.split(":");
+	if (!address) {
+		ctx.status = 400;
+		return;
+	}
+
+	const [uname, host] = address.split("@");
+	if (!uname || !host) {
+		ctx.status = 400;
+		return;
+	}
+
+	if (host !== process.env.HOST) {
+		ctx.status = 404;
+		return;
+	}
+
+	if (uname !== "main" && uname !== "admin") {
+		ctx.status = 404;
+		return;
+	}
+
+	if (ctx.request.query["resource"] !== `acct:${uname}@${process.env.HOST}`) {
 		ctx.status = 404;
 		return;
 	}
@@ -24,17 +56,17 @@ router.get("/.well-known/webfinger", (ctx) => {
 
 	ctx.body = {
 		subject: `acct:admin@${process.env.HOST}`,
-		aliases: [`${origin}/@${username}}`],
+		aliases: [`${origin}/@${uname}}`],
 		links: [
 			{
 				rel: "http://webfinger.net/rel/profile-page",
 				type: "text/html",
-				href: `${origin}/@${username}`,
+				href: `${origin}/@${uname}`,
 			},
 			{
 				rel: "self",
 				type: "application/activity+json",
-				href: `${origin}/users/${username}`,
+				href: `${origin}/users/${uname}`,
 			},
 			{
 				rel: "http://ostatus.org/schema/1.0/subscribe",
@@ -44,7 +76,11 @@ router.get("/.well-known/webfinger", (ctx) => {
 	};
 });
 
-router.get(`@${username}`, (ctx) => {
+router.get(`/@:username`, (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	// TODO: this should be moved to an entirely different front-end or JAM Stack
 	//   solution.
 	ctx.headers["content-type"] = "text/html; charset=utf-8";
@@ -62,6 +98,10 @@ router.get(`@${username}`, (ctx) => {
 });
 
 router.get(`/users/${username}`, (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	console.log("ActivityPub user lookup");
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
@@ -78,6 +118,10 @@ router.get(`/users/${username}`, (ctx) => {
 });
 
 router.get(`/users/${username}/followers`, (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/followers`,
@@ -87,6 +131,10 @@ router.get(`/users/${username}/followers`, (ctx) => {
 });
 
 router.get(`/users/${username}/following`, (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/following`,
@@ -96,6 +144,10 @@ router.get(`/users/${username}/following`, (ctx) => {
 });
 
 router.get(`/users/${username}/outbox`, (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/outbox`,
@@ -105,6 +157,10 @@ router.get(`/users/${username}/outbox`, (ctx) => {
 });
 
 router.get(`/users/${username}/liked`, (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/liked`,
@@ -114,6 +170,10 @@ router.get(`/users/${username}/liked`, (ctx) => {
 });
 
 router.post(`/users/${username}/inbox`, bodyParser(), (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	switch ((ctx.request.body as any).type) {
 		case "Follow":
 			ctx.status = 200;
@@ -124,6 +184,10 @@ router.post(`/users/${username}/inbox`, bodyParser(), (ctx) => {
 });
 
 router.get(`/users/${username}/liked`, (ctx) => {
+	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+		ctx.status = 404;
+		return;
+	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/liked`,
