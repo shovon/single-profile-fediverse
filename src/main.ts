@@ -88,10 +88,10 @@ router.get(`/@:username`, (ctx) => {
 		<!DOCTYPE html>
 		<html>
 			<head>
-				<title>${username}</title>
+				<title>${ctx.params.username}</title>
 			</head>
 			<body>
-				<h1>${username}</h1>
+				<h1>${ctx.params.username}</h1>
 			</body>
 		</html>
 	`;
@@ -105,15 +105,15 @@ router.get(`/users/:username`, (ctx) => {
 	console.log("ActivityPub user lookup");
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
-		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}`,
+		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}`,
 		type: "Person",
-		preferredUsername: username,
+		preferredUsername: ctx.params.username,
 		name: "Sal Rahman",
-		inbox: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/inbox`,
-		followers: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/followers`,
-		following: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/following`,
-		outbox: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/outbox`,
-		liked: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/liked`,
+		inbox: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/inbox`,
+		followers: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/followers`,
+		following: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/following`,
+		outbox: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/outbox`,
+		liked: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/liked`,
 	};
 });
 
@@ -124,7 +124,7 @@ router.get(`/users/:username/followers`, (ctx) => {
 	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
-		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/followers`,
+		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/followers`,
 		type: "OrderedCollection",
 		totalItems: 0,
 	};
@@ -137,7 +137,7 @@ router.get(`/users/:username/following`, (ctx) => {
 	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
-		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/following`,
+		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/following`,
 		type: "OrderedCollection",
 		totalItems: 0,
 	};
@@ -150,7 +150,7 @@ router.get(`/users/:username/outbox`, (ctx) => {
 	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
-		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/outbox`,
+		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/outbox`,
 		type: "OrderedCollection",
 		totalItems: 0,
 	};
@@ -163,7 +163,7 @@ router.get(`/users/:username/liked`, (ctx) => {
 	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
-		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/liked`,
+		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/liked`,
 		type: "OrderedCollection",
 		totalItems: 0,
 	};
@@ -190,7 +190,7 @@ router.get(`/users/:username/liked`, (ctx) => {
 	}
 	ctx.headers["content-type"] = "application/activity+json; charset=utf-8";
 	ctx.body = {
-		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${username}/liked`,
+		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/liked`,
 		type: "OrderedCollection",
 		totalItems: 0,
 	};
