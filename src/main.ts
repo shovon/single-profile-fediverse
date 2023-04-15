@@ -55,7 +55,7 @@ router.get("/.well-known/webfinger", (ctx) => {
 	ctx.headers["content-type"] = "application/jrd+json; charset=utf-8";
 
 	ctx.body = {
-		subject: `acct:admin@${process.env.HOST}`,
+		subject: `acct:${uname}@${process.env.HOST}`,
 		aliases: [`${origin}/@${uname}}`],
 		links: [
 			{
