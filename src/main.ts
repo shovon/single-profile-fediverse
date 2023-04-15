@@ -114,6 +114,7 @@ router.get(`/users/:username`, (ctx) => {
 		],
 		id: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}`,
 		type: "Person",
+		discoverable: true,
 		preferredUsername: ctx.params.username,
 		name: "Sal Rahman",
 		inbox: `${process.env.HTTP_PROTOCOL}://${process.env.HOST}/users/${ctx.params.username}/inbox`,
