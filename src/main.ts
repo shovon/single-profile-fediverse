@@ -41,7 +41,7 @@ router.get("/.well-known/webfinger", (ctx) => {
 		return;
 	}
 
-	if (uname !== "main" && uname !== "admin") {
+	if (uname !== "main") {
 		ctx.status = 404;
 		return;
 	}
@@ -77,7 +77,7 @@ router.get("/.well-known/webfinger", (ctx) => {
 });
 
 router.get(`/@:username`, (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
@@ -98,7 +98,7 @@ router.get(`/@:username`, (ctx) => {
 });
 
 router.get(`/users/:username`, (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
@@ -126,7 +126,7 @@ router.get(`/users/:username`, (ctx) => {
 });
 
 router.get(`/users/:username/followers`, (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
@@ -139,7 +139,7 @@ router.get(`/users/:username/followers`, (ctx) => {
 });
 
 router.get(`/users/:username/following`, (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
@@ -152,7 +152,7 @@ router.get(`/users/:username/following`, (ctx) => {
 });
 
 router.get(`/users/:username/outbox`, (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
@@ -165,7 +165,7 @@ router.get(`/users/:username/outbox`, (ctx) => {
 });
 
 router.get(`/users/:username/liked`, (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
@@ -178,7 +178,7 @@ router.get(`/users/:username/liked`, (ctx) => {
 });
 
 router.post(`/users/:username/inbox`, bodyParser(), (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
@@ -192,7 +192,7 @@ router.post(`/users/:username/inbox`, bodyParser(), (ctx) => {
 });
 
 router.get(`/users/:username/liked`, (ctx) => {
-	if (ctx.params.username !== username && ctx.params.username !== "admin") {
+	if (ctx.params.username !== username) {
 		ctx.status = 404;
 		return;
 	}
