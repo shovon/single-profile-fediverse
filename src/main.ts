@@ -196,6 +196,10 @@ router.get(`/users/${username}/liked`, (ctx) => {
 	};
 });
 
+app.use(async (ctx, next) => {
+	console.log(ctx.request.URL.toString());
+	await next();
+});
 app.use(router.routes());
 
 app.listen(process.env.PORT, function (this: Server) {
